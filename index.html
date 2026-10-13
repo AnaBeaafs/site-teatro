@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Our Magical Stories · Broadway Experience</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700;900&family=Playfair+Display:ital,wght@0,500;0,700;1,500&display=swap" rel="stylesheet">
+<style>
+:root{--navy:#0b1a4a;--night:#07123a;--gold:#f6c744;--gold2:#c98a12;--red:#c4161c;--cream:#fbefcf;--cw:clamp(44px,13vw,230px);box-sizing:border-box}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body,#root{height:100%;background:var(--night)}
+body{font-family:'Playfair Display',Georgia,serif;color:#fff;overflow:hidden}
+#scroller{height:100%;overflow-y:auto;scroll-snap-type:y mandatory;overscroll-behavior:contain;-webkit-overflow-scrolling:touch}
+section{position:relative;height:100vh;height:100dvh;scroll-snap-align:start;overflow:hidden;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:0 calc(var(--cw) + 3%);contain:layout paint}
+.disp{font-family:'Cinzel Decorative',serif;font-weight:900}
+.gold{background:linear-gradient(180deg,#fff3b0,#f6c744 45%,#c98a12);-webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0 3px 0 rgba(0,0,0,.45))}
+/* menu */
+.menu{position:fixed;top:0;left:0;right:0;z-index:50;display:flex;justify-content:center;align-items:center;padding:calc(env(safe-area-inset-top,0px) + 12px) 16px 12px;background:rgba(7,18,58,.96);border-bottom:1px solid rgba(246,199,68,.45);transform:translateY(-110%);transition:transform .5s cubic-bezier(.2,.8,.2,1)}
+.menu.on{transform:none}
+.logo{display:flex;align-items:center;gap:10px;font-family:'Cinzel Decorative',serif;font-weight:700;font-size:clamp(13px,3.4vw,18px);letter-spacing:.06em;color:var(--gold);cursor:pointer;border:0;background:none}
+.logo svg{width:26px;height:26px}
+.logo img{display:block;height:clamp(22px,4vh,32px);width:auto;max-width:50vw;object-fit:contain}
+/* cortinas */
+.curtain{position:absolute;top:0;bottom:0;width:var(--cw);z-index:5;pointer-events:none;transition:transform 1.8s cubic-bezier(.7,0,.2,1);background:repeating-linear-gradient(90deg,#8d0c12 0,#e0262c 9%,#a40f15 18%,#6e080d 26%);box-shadow:inset 0 0 40px rgba(0,0,0,.55)}
+.curtain.l{left:0;transform-origin:left;border-right:3px solid var(--gold2)}
+.curtain.r{right:0;transform-origin:right;border-left:3px solid var(--gold2)}
+.curtain::after{content:"";position:absolute;bottom:0;left:0;right:0;height:46px;background:repeating-linear-gradient(90deg,var(--gold) 0 5px,var(--gold2) 5px 10px);opacity:.9}
+.curtain::before{content:"";position:absolute;top:36%;width:20px;height:90px;background:linear-gradient(var(--gold),var(--gold2));border-radius:8px 8px 14px 14px;filter:drop-shadow(0 4px 4px rgba(0,0,0,.5))}
+.curtain.l::before{right:6px}.curtain.r::before{left:6px}
+.closed .curtain.l{transform:translateX(120%) scaleX(2.4)}
+.closed .curtain.r{transform:translateX(-120%) scaleX(2.4)}
+.valance{position:absolute;top:0;left:0;right:0;height:7vh;z-index:6;background:repeating-linear-gradient(90deg,#8d0c12 0,#e0262c 40px,#8d0c12 80px);border-bottom:4px solid var(--gold);box-shadow:0 6px 14px rgba(0,0,0,.5)}
+/* capa */
+.cover{background:radial-gradient(ellipse at 50% 30%,#1b3a8f,#0b1a4a 55%,#050c2b)}
+.star{position:absolute;background:var(--gold);border-radius:50%;animation:tw 3s infinite ease-in-out}
+@keyframes tw{0%,100%{opacity:.2}50%{opacity:1}}
+.pre{font-size:clamp(12px,min(2.8vw,2.6vh),24px);line-height:1.35;letter-spacing:.05em;text-shadow:0 2px 6px #000;position:relative;z-index:3}
+.big{font-size:clamp(36px,min(9.5vw,12.5vh),104px);line-height:1;margin:2.4vh 0;position:relative;z-index:3}
+.sub{font-size:clamp(12px,min(2.4vw,2.5vh),20px);line-height:1.55;max-width:520px;position:relative;z-index:3}
+.book{position:absolute;bottom:0;left:50%;width:min(86vw,720px);height:30vh;transform:translateX(-50%);z-index:2;pointer-events:none}
+.glow{position:absolute;bottom:6%;left:50%;width:70vmin;height:70vmin;transform:translateX(-50%);background:radial-gradient(circle,rgba(255,224,120,.85),rgba(255,200,60,.2) 40%,transparent 68%);animation:pulse 4s infinite ease-in-out}
+@keyframes pulse{50%{transform:translateX(-50%) scale(1.12);opacity:.8}}
+.hint{position:absolute;bottom:2.2vh;z-index:7;font-size:12px;color:var(--gold);animation:bob 1.8s infinite;letter-spacing:.2em}
+@keyframes bob{50%{transform:translateY(8px)}}
+.ent{opacity:0;transform:translateY(28px) scale(.97);transition:opacity 1s .5s,transform 1s .5s}
+.in .ent{opacity:1;transform:none}
+.in .ent.d2{transition-delay:.85s}.in .ent.d3{transition-delay:1.2s}
+/* slides */
+.slide .bg{will-change:transform;position:absolute;inset:0;background-size:cover;background-position:center;transform:scale(1);transition:transform 9s ease-out}
+.slide.in .bg{transform:scale(1.12)}
+.slide::after{content:"";position:absolute;inset:0;background:radial-gradient(ellipse at center,rgba(0,0,0,.15),rgba(0,0,0,.65))}
+.slide>*:not(.bg){position:relative;z-index:3}
+.frame{position:absolute!important;inset:max(14px,2.5vh) max(14px,2.5vw);border:3px solid;border-image:linear-gradient(135deg,var(--e1),var(--e2) 25%,var(--f1) 50%,var(--e2) 75%,var(--e1)) 1;z-index:4;pointer-events:none;box-shadow:0 0 22px var(--glow),inset 0 0 30px var(--glow)}
+.tgrad{background:linear-gradient(180deg,var(--e1) 0%,var(--e2) 30%,var(--f1) 62%,var(--f2) 100%);-webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0 0 2px var(--e1)) drop-shadow(0 3px 0 rgba(0,0,0,.4))}
+.tag{font-size:clamp(13px,2.6vw,18px);font-style:italic;font-weight:700;color:var(--e1);text-shadow:0 0 14px var(--glow),0 2px 6px #000;margin-bottom:2vh;letter-spacing:.05em}
+.stitle{font-size:clamp(34px,9vw,92px);line-height:1.02}
+.time{margin:2.4vh 0 3.4vh;font-size:clamp(13px,2.6vw,19px);opacity:.92}
+.btn{display:inline-block;text-decoration:none;font-family:'Playfair Display',serif;font-weight:700;font-size:clamp(15px,3vw,20px);padding:.9em 2.2em;border-radius:999px;border:3px solid transparent;color:#fff;text-shadow:0 2px 4px rgba(0,0,0,.5);cursor:pointer;box-shadow:0 8px 24px var(--glow,rgba(246,199,68,.35));transition:transform .25s,box-shadow .25s}
+.btn:hover,.btn:focus-visible{transform:translateY(-3px) scale(1.04);box-shadow:0 12px 34px var(--glow,rgba(246,199,68,.6));outline:none}
+.dots{position:fixed;right:max(10px,2vw);top:50%;transform:translateY(-50%);z-index:40;display:flex;flex-direction:column;gap:12px}
+.dots button{width:10px;height:10px;border-radius:50%;border:1px solid var(--gold);background:transparent;cursor:pointer;padding:0;transition:.3s}
+.dots button.on{background:var(--gold);transform:scale(1.4)}
+/* final */
+.end{background:radial-gradient(ellipse at 50% 40%,#fff7dc,#f3dca0 70%,#e2bd6a);color:var(--navy)}
+.end .big{font-size:clamp(32px,min(8vw,10.5vh),88px);color:var(--navy);filter:drop-shadow(0 2px 0 var(--gold))}
+.end .sub{font-size:clamp(12px,min(2.4vw,2.5vh),19px);max-width:500px}
+.cta{font-style:italic;font-size:clamp(18px,min(4vw,4.2vh),32px);margin:2vh 0;color:var(--navy)}
+.end .valance{display:block}
+.sky{position:absolute;bottom:0;left:0;width:100%;height:20vh;z-index:2}
+.foot{position:absolute;left:0;right:0;bottom:0;z-index:8;padding:10px 16px calc(env(safe-area-inset-bottom,0px) + 10px);background:rgba(7,18,58,.9);color:#f3dca0;font-size:clamp(10px,2.6vw,13px);letter-spacing:.04em;text-align:center;line-height:1.5}
+.foot a{color:var(--gold);font-weight:700;text-decoration:underline;text-underline-offset:3px}
+.foot a:hover,.foot a:focus-visible{color:#fff3b0;outline:none}
+/* modal */
+.ov{position:fixed;inset:0;z-index:100;background:rgba(3,8,30,.8);display:flex;align-items:center;justify-content:center;padding:22px;animation:fade .3s}
+@keyframes fade{from{opacity:0}}
+.modal{max-width:520px;width:100%;background:linear-gradient(#10246b,#07123a);border:2px solid var(--gold);border-radius:14px;padding:30px 24px;text-align:center;animation:pop .45s cubic-bezier(.2,1.4,.4,1)}
+@keyframes pop{from{transform:scale(.6) rotate(-3deg);opacity:0}}
+.modal h3{font-size:clamp(24px,6vw,36px);margin-bottom:12px}
+.modal p{line-height:1.6;margin-bottom:22px;font-size:16px}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition-duration:.01s!important}}
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.3.1/umd/react.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.3.1/umd/react-dom.production.min.js"></script>
+<script>
+const {useState,useEffect,useRef,useMemo}=React, h=React.createElement;
+
+/* ====== EDITE AQUI: os 4 espetáculos ======
+   img: coloque uma imagem em base64 (data:image/jpeg;base64,...) para usar sua foto.
+   Se vazio, aparece um fundo em degradê. */
+const SHOWS=[
+ {title:"Feiurinha",tag:"4º ano A",img:"/fotos/1.jpeg",bg:"linear-gradient(160deg,#f59e0b,#b45309 45%,#3b1203)",
+  link:"https://feiurinha.vercel.app/",fill:["#8b5cf6","#4c1d95"],edge:["#ddd6fe","#a78bfa"],glow:"rgba(139,92,246,.55)"},
+ {title:"Encanto",tag:"4º ano B",img:"/fotos/2.jpeg",bg:"linear-gradient(160deg,#10b981,#065f46 45%,#022c22)",
+  link:"https://encanto-mu.vercel.app/",fill:["#f472b6","#be185d"],edge:["#fce7f3","#f9a8d4"],glow:"rgba(244,114,182,.55)"},
+ {title:"Wizard Of Oz",tag:"5º ano A",img:"/fotos/3.jpeg",bg:"linear-gradient(160deg,#8b5cf6,#4c1d95 45%,#1e0b3f)",
+  link:"https://wizardofoz-ten.vercel.app/",fill:["#166534","#052e16"],edge:["#4ade80","#15803d"],glow:"rgba(34,197,94,.45)"},
+ {title:"Wicked",tag:"5º ano B",img:"/fotos/4.jpeg",bg:"linear-gradient(160deg,#ef4444,#991b1b 45%,#3f0a0a)",
+  link:"https://wicked-nu.vercel.app/",fill:["#374151","#000000"],edge:["#d1d5db","#6b7280"],glow:"rgba(255,255,255,.3)"}
+];
+
+function useInView(){
+  const r=useRef(),[v,setV]=useState(false);
+  useEffect(()=>{const o=new IntersectionObserver(([e])=>setV(e.isIntersecting),{threshold:.55});o.observe(r.current);return()=>o.disconnect()},[]);
+  return [r,v];
+}
+function Stars({n=40}){
+  const s=useMemo(()=>Array.from({length:n},(_,i)=>({l:Math.random()*100,t:Math.random()*88,z:2+Math.random()*5,d:Math.random()*3})),[n]);
+  return s.map((x,i)=>h("i",{key:i,className:"star",style:{left:x.l+"%",top:x.t+"%",width:x.z,height:x.z,animationDelay:x.d+"s"}}));
+}
+function Curtains({open}){
+  return h("div",{className:open?"":"closed"},h("div",{className:"curtain l"}),h("div",{className:"curtain r"}));
+}
+function Skyline({color="#14307a"}){
+  const b=useMemo(()=>{let x=0,a=[];while(x<1000){const w=30+Math.random()*50,hh=40+Math.random()*130;a.push({x,w,hh});x+=w+4}return a},[]);
+  return h("svg",{className:"sky",viewBox:"0 0 1000 200",preserveAspectRatio:"none"},
+    b.map((q,i)=>h("g",{key:i},
+      h("rect",{x:q.x,y:200-q.hh,width:q.w,height:q.hh,fill:color}),
+      Array.from({length:Math.floor(q.hh/26)},(_,k)=>h("rect",{key:k,x:q.x+q.w*.3,y:200-q.hh+8+k*24,width:5,height:7,fill:"#ffd76a",opacity:.8})))));
+}
+const Cover=React.memo(function Cover(){
+  const [ref,v]=useInView();
+  return h("section",{ref,id:"s0",className:"cover"+(v?" in":"")},
+    h(Stars,{n:26}),h("div",{className:"valance"}),h(Curtains,{open:v}),
+    h("div",{className:"glow"}),
+    h("p",{className:"pre ent"},"5TH AND 4TH GRADE",h("br"),"BROADWAY EXPERIENCE",h("br"),h("i",null,"presents")),
+    h("h1",{className:"big disp gold ent d2"},"Our",h("br"),"Magical",h("br"),"Stories"),
+    h("p",{className:"sub ent d3"},"Four Tales ✦ One Stage",h("br"),"A journey of imagination, courage and friendship"),
+    h("div",{className:"hint"},"ARRASTE PARA BAIXO ⌄"));
+});
+const Slide=React.memo(function Slide({s,i}){
+  const [ref,v]=useInView();
+  const st={background:`linear-gradient(135deg,${s.fill[0]},${s.fill[1]}) padding-box, linear-gradient(135deg,${s.edge[0]},${s.edge[1]}) border-box`,"--glow":s.glow};
+  return h("section",{ref,id:"s"+(i+1),className:"slide"+(v?" in":""),style:{"--f1":s.fill[0],"--f2":s.fill[1],"--e1":s.edge[0],"--e2":s.edge[1],"--glow":s.glow}},
+    h("div",{className:"bg",style:{backgroundImage:s.img?`url(${s.img}), ${s.bg}`:s.bg}}),
+    h("div",{className:"frame"}),
+    h("p",{className:"tag ent"},s.tag),
+    h("h2",{className:"stitle disp tgrad ent d2"},s.title),
+    s.time&&h("p",{className:"time ent d2"},s.time),
+    h("a",{className:"btn ent d3",href:s.link,target:"_blank",rel:"noopener noreferrer",style:st},"Ver o espetáculo"));
+});
+const End=React.memo(function End(){
+  const [ref,v]=useInView();
+  return h("section",{ref,id:"s5",className:"end"+(v?" in":"")},
+    h("div",{className:"valance"}),h(Curtains,{open:v}),
+    h("h2",{className:"big disp ent"},"Thank You",h("br"),"for being here!"),
+    h("p",{className:"sub ent d2"},"Seu apoio e presença tornam essa jornada ainda mais especial. Nossos alunos se dedicaram muito para trazer essas histórias à vida, e hoje é o grande dia de compartilhar seu talento, criatividade e muito amor pelo teatro."),
+    h("p",{className:"cta ent d3"},"Aproveite o espetáculo!"),
+    h("p",{className:"ent d3",style:{fontSize:"clamp(10px,2.4vw,13px)",letterSpacing:".12em",position:"relative",zIndex:3,marginBottom:"16vh"}},"4TH & 5TH GRADE BROADWAY EXPERIENCE"),
+    h(Skyline),
+    h("footer",{className:"foot"},"© 2026 Todos os direitos reservados · Produzido por ",h("a",{href:"https://www.instagram.com/biasousawd/",target:"_blank",rel:"noopener noreferrer"},"Bia Sousa")," | Web Designer"));
+});
+function Masks(){
+  return h("svg",{viewBox:"0 0 32 32",fill:"none",stroke:"#f6c744",strokeWidth:"1.8"},
+    h("path",{d:"M3 6h13v8a6.5 6.5 0 0 1-13 0z"}),h("path",{d:"M16 12h13v8a6.5 6.5 0 0 1-13 0z",opacity:".7"}),
+    h("path",{d:"M6.5 11q2.5 2 5 0M20 20q2.5-2 5 0"}));
+}
+function App(){
+  const sc=useRef(),[menu,setMenu]=useState(false),[act,setAct]=useState(0);
+  useEffect(()=>{
+    const el=sc.current;
+    let t=0,m=false,a=0;const on=()=>{if(t)return;t=requestAnimationFrame(()=>{t=0;const nm=el.scrollTop>el.clientHeight*.35,na=Math.round(el.scrollTop/el.clientHeight);if(nm!==m){m=nm;setMenu(nm)}if(na!==a){a=na;setAct(na)}})};
+    el.addEventListener("scroll",on,{passive:true});return()=>el.removeEventListener("scroll",on);
+  },[]);
+  const go=i=>{const e=document.getElementById("s"+i);e&&e.scrollIntoView({behavior:"smooth"})};
+  return h(React.Fragment,null,
+    h("header",{className:"menu"+(menu?" on":"")},
+      h("button",{className:"logo",onClick:()=>go(0),"aria-label":"Voltar ao início"},h("img",{src:"/fotos/logo.png",alt:"Logo do colégio",decoding:"async"}))),
+    h("nav",{className:"dots","aria-label":"Seções"},
+      [0,1,2,3,4,5].map(i=>h("button",{key:i,className:act===i?"on":"","aria-label":"Ir para "+(i+1),onClick:()=>go(i)}))),
+    h("main",{id:"scroller",ref:sc},
+      h(Cover),SHOWS.map((s,i)=>h(Slide,{key:i,s,i})),h(End)));
+}
+ReactDOM.createRoot(document.getElementById("root")).render(h(App));
+</script>
+</body>
+</html>

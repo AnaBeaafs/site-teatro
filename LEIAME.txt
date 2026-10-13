@@ -1,0 +1,9 @@
+Our Magical Stories - Broadway Experience
+
+Como usar:
+1. Abra o index.html no navegador (precisa de internet para carregar React e as fontes).
+2. Para editar os 4 espetaculos, abra o index.html em um editor de texto e procure por "const SHOWS".
+   - title, tag, time e desc: textos de cada espetaculo.
+   - img: foto do espetaculo (caminho do arquivo, ex: "fotos/leao.jpg", ou base64).
+   - bg: degrade usado quando nao ha foto.
+3. Para publicar, envie a pasta para qualquer hospedagem (Netlify, Vercel, GitHub Pages).
